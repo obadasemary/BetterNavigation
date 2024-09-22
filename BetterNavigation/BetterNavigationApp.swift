@@ -9,9 +9,19 @@ import SwiftUI
 
 @main
 struct BetterNavigationApp: App {
+    
+    @State private var routes: [Route] = []
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack(path: $routes) {
+                ContentView()
+                    .navigationDestination(for: Route.self) { route in
+                        route.destination
+                    }
+            }.environment(\.navigate, NavigateAction(action: { route in
+                routes.append(route)
+            }))
         }
     }
 }
