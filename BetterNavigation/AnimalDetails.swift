@@ -28,8 +28,6 @@ struct AnimalDetails: View {
 }
 
 #Preview {
-    
     let animal = Animal(name: "Lion", image: "crown.fill")
-    
     AnimalDetails(animal: animal)
 }
