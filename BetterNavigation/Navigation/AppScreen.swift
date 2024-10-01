@@ -33,7 +33,7 @@ extension AppScreen {
         case .animal:
             AnimalListNavigationStack()
         case .locations:
-            LocationsNavigationStackStack()
+            LocationsNavigationStack()
         }
     }
 }

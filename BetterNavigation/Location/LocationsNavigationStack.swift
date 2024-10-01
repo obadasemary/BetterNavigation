@@ -1,5 +1,5 @@
 //
-//  LocationsNavigationStackStack.swift
+//  LocationsNavigationStack.swift
 //  BetterNavigation
 //
 //  Created by Abdelrahman Mohamed on 02/10/2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LocationsNavigationStackStack: View {
+struct LocationsNavigationStack: View {
     
     @State private var routes: [LocationRoute] = []
     
@@ -27,5 +27,5 @@ struct LocationsNavigationStackStack: View {
 }
 
 #Preview {
-    LocationsNavigationStackStack()
+    LocationsNavigationStack()
 }
