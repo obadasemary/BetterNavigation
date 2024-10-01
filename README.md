@@ -9,7 +9,11 @@ This project demonstrates a custom navigation system in SwiftUI using the `Navig
 - [Custom Navigation System](#custom-navigation-system)
     - [NavigateAction](#navigateaction)
     - [Route](#route)
-- [Animal List and Detail Views](#animal-list-and-detail-views)
+- [Animal and Location Views](#animal-and-location-views)
+    - [Animal List Navigationstack](#animallistnavigationstack)
+        - [Animal List View](#animallistview)
+        - [Animal Details](#animaldetails)
+    - [Locations Navigationstackstack](#locationsnavigationstackstack)
 - [Running the Project](#running-the-project)
 - [Preview Setup](#preview-setup)
 
@@ -24,14 +28,20 @@ This project demonstrates a custom navigation system in SwiftUI using the `Navig
 # Project Structure
 
 Here’s a breakdown of the files and their purpose: 
-* **`Animal.swift`**: Defines the `Animal` model, which represents each animal with a `name` and `image`. 
-* **`AnimalRoute.swift`**: Enum that defines different routes related to animal views (list and detail). 
-* **`Route.swift`**: Enum that encapsulates all possible routes in the app, including `AnimalRoute`. 
+* **`Animal.swift`**: Defines the `Animal` model, which represents each animal with a `name` and `image`.
+* **`Location.swift`**: Defines the `Location` model, representing each location with a `name` and `description`.
+* **`AppScreen.swift`**: Enum that defines the app's available screens: animals and locations, with labels and destination views.
+* **`AnimalRoute.swift`**: Enum that defines different routes related to animal views (list and detail).
+* **`LocationRoute.swift`**: Enum that defines different routes related to location views. 
+* **`Route.swift`**: Enum that encapsulates all possible routes in the app, including `AnimalRoute` and `LocationRoute`. 
 * **`NavigateAction.swift`**: Defines an action used to handle navigation through the `@Environment` key. 
 * **`AnimalListView.swift`**: Displays the list of animals and handles navigation to the detail screen when an animal is tapped. 
 * **`AnimalDetails.swift`**: Displays the details of a selected animal. 
-* **`ContentView.swift`**: The starting point that shows the `AnimalListView`. 
-* **`BetterNavigationApp.swift`**: The entry point of the app, setting up the `NavigationStack` and injecting the custom `NavigateAction` environment key.”
+* **`LocationView.swift`**: Displays details for a specific location.
+* **`AnimalListNavigationStack.swift`**: Manages navigation for animal-related views using `NavigationStack`.
+* **`LocationsNavigationStackStack.swift`**: Manages navigation for location-related views using `NavigationStack`.
+* **`ContentView.swift`**: The main view that sets up the tab bar and switches between `animal` and `location` screens.
+* **`BetterNavigationApp.swift`**: The entry point of the app, setting up the `NavigationStack` and injecting the custom `NavigateAction` environment key.
 
 # Custom Navigation System
 
@@ -66,6 +76,7 @@ The `Route` enum defines the possible navigation routes within the app. It suppo
 ```swift
 enum Route: Hashable {
     case animal(AnimalRoute)
+    case location(LocationRoute)
 }
 ```
 
@@ -76,13 +87,65 @@ enum AnimalRoute: Hashable {
     case list
     case detail(Animal)
 }
+
+enum LocationRoute: Hashable {
+    case location
+}
 ```
 
 By using enums, we ensure that each route is strongly typed and well-organized, making it easier to handle navigation flows.
 
-# Animal List and Detail Views
+# Animal and Location Views
 
-## AnimalListView
+## AnimalListNavigationStack
+The `AnimalListNavigationStack` handles navigation for animal-related views. It presents a list of animals, and tapping on any of them navigates to the detail screen.
+
+```swift
+struct AnimalListNavigationStack: View {
+    
+    @State var routes: [AnimalRoute] = []
+    
+    var body: some View {
+        NavigationStack(path: $routes) {
+            AnimalListView()
+                .navigationDestination(for: AnimalRoute.self) { route in
+                    route.destination
+                }
+                .environment(\.navigate, NavigateAction(action: { route in
+                    if case let .animal(animalRoute) = route {
+                        routes.append(animalRoute)
+                    }
+                }))
+        }
+    }
+}
+```
+
+## LocationsNavigationStack
+The `LocationsNavigationStack` handles navigation for location-related views. It presents a detailed view for the selected location.
+
+```swift
+struct LocationsNavigationStack: View {
+    
+    @State private var routes: [LocationRoute] = []
+    
+    var body: some View {
+        NavigationStack(path: $routes) {
+            LocationView()
+                .navigationDestination(for: LocationRoute.self) { route in
+                    route.destination
+                }
+        }
+        .environment(\.navigate, NavigateAction(action: { route in
+            if case let .location(locationRoute) = route {
+                routes.append(locationRoute)
+            }
+        }))
+    }
+}
+```
+
+### AnimalListView
 The `AnimalListView` displays a list of animals. Each animal in the list is tappable, and when tapped, it navigates to the `AnimalDetails` view.
 
 ```swift
