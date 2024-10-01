@@ -8,11 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @Binding var selection: AppScreen?
+    
     var body: some View {
-        AnimalListView()
+        TabView(selection: $selection) {
+            ForEach(AppScreen.allCases) { screen in
+                screen.destination
+                    .tag(screen as AppScreen?)
+                    .tabItem { screen.label }
+            }
+        }
     }
 }
 
 #Preview {
-    ContentView()
+    @Previewable @State var selection: AppScreen?
+    ContentView(selection: $selection)
 }

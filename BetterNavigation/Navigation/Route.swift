@@ -9,12 +9,15 @@ import SwiftUI
 
 enum Route: Hashable {
     case animal(AnimalRoute)
+    case location(LocationRoute)
     
     @ViewBuilder
     var destination: some View {
         switch self {
         case .animal(let animalRoute):
             animalRoute.destination
+        case .location(let locationRoute):
+            locationRoute.destination
         }
     }
 }
