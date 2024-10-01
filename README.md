@@ -7,13 +7,14 @@ This project demonstrates a custom navigation system in SwiftUI using the `Navig
 - [Features](#features)
 - [Project Structure](#project-structure)
 - [Custom Navigation System](#custom-navigation-system)
+    - [Acknowledgements](#acknowledgements)
     - [NavigateAction](#navigateaction)
     - [Route](#route)
 - [Animal and Location Views](#animal-and-location-views)
     - [Animal List Navigationstack](#animallistnavigationstack)
         - [Animal List View](#animallistview)
         - [Animal Details](#animaldetails)
-    - [Locations Navigationstackstack](#locationsnavigationstackstack)
+    - [Locations Navigationstack](#locationsnavigationstack)
 - [Running the Project](#running-the-project)
 - [Preview Setup](#preview-setup)
 
@@ -46,6 +47,10 @@ Here’s a breakdown of the files and their purpose:
 # Custom Navigation System
 
 This project uses a custom navigation system that allows for seamless navigation between views using `NavigationStack` and `@Environment`.
+
+# Acknowledgements
+
+This project takes inspiration from the [React Router's useNavigate](https://reactrouter.com/en/main/hooks/use-navigate) hook, particularly in the way navigation actions are abstracted into an environment variable. Just as `useNavigate` in React Router enables declarative navigation within components, `NavigateAction` in this SwiftUI project serves a similar role by allowing views to trigger navigation using the `@Environment` key. This approach provides a cleaner separation of navigation logic from view code, improving flexibility and reusability.
 
 # NavigateAction
 The `NavigateAction` struct defines how navigation is triggered. It is injected into the environment so that any view can access the `navigate` function to push new routes.
